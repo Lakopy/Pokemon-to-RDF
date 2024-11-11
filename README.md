@@ -19,5 +19,5 @@ This branch uses the **Movesets** dataset from [Kaggle](https://www.kaggle.com/d
 
 ## Usage
 
-1. Run `clean.py` and `int.py` to preprocess `movesets.csv`.
+1. First run `clean.py` and then `int.py` to preprocess `movesets.csv`.
 2. Execute `rdf.py` to generate `movesets.ttl` in RDF format.
