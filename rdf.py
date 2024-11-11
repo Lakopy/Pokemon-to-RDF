@@ -6,7 +6,7 @@ EX = Namespace("http://example.org/")
 g = Graph()
 g.bind("ex", EX)
 
-with open(r"C:\Users\joako\Documents\Tareas\watos\proyecto\movesets3.csv", newline='') as csvfile:
+with open("./Pokemon-to-RDF/movesets3.csv", newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         pokemon_uri = URIRef(EX + "pokemon/" + row['forme'].replace(" ", "_"))
