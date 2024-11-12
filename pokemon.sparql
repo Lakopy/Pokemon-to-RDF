@@ -32,7 +32,7 @@ CONSTRUCT {
 } 
 FROM <file:pokemon.csv> 
 WHERE {
-  BIND (URI(CONCAT('http://ex.org/pokemon/', ?forme)) AS ?URI)
+  BIND (URI(CONCAT('http://example.org/pokemon/', ?forme)) AS ?URI)
   BIND (xsd:integer(?id) AS ?poke_id)
   BIND (xsd:integer(?ndex) AS ?pokedex)
   BIND (xsd:integer(?hp) AS ?hpStat)
