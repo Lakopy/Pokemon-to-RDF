@@ -5,7 +5,7 @@ This branch uses the **Movesets** dataset from [Kaggle](https://www.kaggle.com/d
 ## Process Overview
 
 1. **Data Cleaning**:
-   - The `clean.py` and `int.py` scripts preprocess the movesets data, handling inconsistencies or missing values as needed.
+   - The `clean.py` and `int.py` scripts preprocess the movesets data.
 
 2. **RDF Transformation**:
    - After cleaning, the `rdf.py` script converts the data into RDF format, generating `movesets.ttl`, a Turtle file with moveset information for all 802 Pokémon (including Mega Evolutions and regional forms).
