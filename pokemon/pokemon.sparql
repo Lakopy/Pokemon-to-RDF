@@ -9,8 +9,8 @@ CONSTRUCT {
     ex:forme ?poke_forme ;
     ex:type1 ?firstType ;
     ex:type2 ?secondType ;
-    ex:ability1 ?firstType ;
-    ex:ability2 ?secondType ;
+    ex:ability1 ?firstAbility ;
+    ex:ability2 ?secondAbility ;
     ex:abilityH ?hiddenAbility ;
     ex:hp ?hpStat ;
     ex:attack ?attackStat ;
