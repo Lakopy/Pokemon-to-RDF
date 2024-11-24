@@ -1,0 +1,62 @@
+PREFIX ex: <http://example.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+CONSTRUCT {
+  ?URI a ex:Pokemon ;
+    ex:id ?poke_id ;
+    ex:ndex ?pokedex ;
+    ex:species ?poke_species ;
+    ex:forme ?poke_forme ;
+    ex:type1 ?firstType ;
+    ex:type2 ?secondType ;
+    ex:ability1 ?firstType ;
+    ex:ability2 ?secondType ;
+    ex:abilityH ?hiddenAbility ;
+    ex:hp ?hpStat ;
+    ex:attack ?attackStat ;
+    ex:defense ?defenseStat ;
+    ex:spattack ?spattackStat ;
+    ex:spdefense ?spdefenseStat ;
+    ex:speed ?speedStat ;
+    ex:total ?totalStats ;
+    ex:weight ?weightPounds ;
+    ex:height ?heightFeet ;
+    ex:dex1 ?firstDex ;
+    ex:dex2 ?secondDex ;
+    ex:class ?poke_class ;
+    ex:percentMale ?percentMale ;
+    ex:percentFemale ?percentFemale ;
+    ex:preEvolution ?preEvolution ;
+    ex:eggGroup1 ?eggGroup1 ;
+    ex:eggGroup2 ?eggGroup2 ;
+} 
+FROM <file:pokemon.csv> 
+WHERE {
+  BIND (URI(CONCAT('http://example.org/pokemon/', ?forme)) AS ?URI)
+  BIND (xsd:integer(?id) AS ?poke_id)
+  BIND (xsd:integer(?ndex) AS ?pokedex)
+  BIND (xsd:integer(?hp) AS ?hpStat)
+  BIND (xsd:integer(?attack) AS ?attackStat)
+  BIND (xsd:integer(?defense) AS ?defenseStat)
+  BIND (xsd:integer(?spattack) AS ?spattackStat)
+  BIND (xsd:integer(?spdefense) AS ?spdefenseStat)
+  BIND (xsd:integer(?speed) AS ?speedStat)
+  BIND (xsd:integer(?total) AS ?totalStats)
+  BIND (xsd:integer(?percentfemale) AS ?percentFemale)
+  BIND (xsd:integer(?percentmale) AS ?percentMale)
+  BIND (xsd:string (?species) AS ?poke_species) 
+  BIND (xsd:string (?forme) AS ?poke_forme) 
+  BIND (xsd:string (?type1) AS ?firstType) 
+  BIND (xsd:string (?type2) AS ?secondType) 
+  BIND (xsd:string (?ability1) AS ?firstAbility) 
+  BIND (xsd:string (?ability2) AS ?secondAbility) 
+  BIND (xsd:string (?abilityH) AS ?hiddenAbility) 
+  BIND (xsd:string (?weight) AS ?weightPounds) 
+  BIND (xsd:string (?height) AS ?heightFeet) 
+  BIND (xsd:string (?dex1) AS ?firstDex) 
+  BIND (xsd:string (?dex2) AS ?secondDex) 
+  BIND (xsd:string (?class) AS ?poke_class) 
+  BIND (xsd:string (?preevolution) AS ?preEvolution) 
+  BIND (xsd:string (?egggroup1) AS ?eggGroup1) 
+  BIND (xsd:string (?egggroup2) AS ?eggGroup2) 
+}
