@@ -1,0 +1,37 @@
+# Ataque STAB mas fuerte
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?name ?powerStat ?type ?moves ?category ?effectivePower WHERE {
+ ?pokemon rdf:type ex:Pokemon ; ex:forme ?name ; ex:type1 ?type ; ex:attack ?atk ; ex:spattack ?spatk.
+ ?moveset rdf:type ex:Moveset ; ex:forPokemon ?pokemon ; ex:moves ?moves .
+ ?moves ex:type ?type ; ex:category ?category ;ex:power ?movePower .
+
+ BIND(xsd:int(?movePower) AS ?movePowerInt)
+  BIND(
+    IF(?category = "Physical", ?atk, ?spatk) AS ?powerStat 
+  )
+  
+    BIND(
+    FLOOR(22 * ((?movePowerInt * ?powerStat)/83) * 1.5 ) as ?effectivePower
+  )
+  
+  FILTER(?effectivePower > 0)
+} order by desc(?effectivePower)
+
+# Fastest support pokemon
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?name ?speed (GROUP_CONCAT(?moveName; separator=", ") AS ?allMoves) WHERE {
+ ?pokemon rdf:type ex:Pokemon ; ex:forme ?name ; ex:speed ?speed .
+  ?moveset rdf:type ex:Moveset ; ex:forPokemon ?pokemon ; ex:moves ?moves .
+  ?moves ex:category "Status" ; ex:name ?moveName .
+} group by ?name ?speed 
+order by desc(?speed)
