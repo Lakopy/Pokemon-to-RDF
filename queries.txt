@@ -24,6 +24,8 @@ SELECT ?name ?powerStat ?type ?moves ?category ?effectivePower WHERE {
 
 # Fastest support pokemon
 
+
+
 PREFIX ex: <http://example.org/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -35,3 +37,88 @@ SELECT ?name ?speed (GROUP_CONCAT(?moveName; separator=", ") AS ?allMoves) WHERE
   ?moves ex:category "Status" ; ex:name ?moveName .
 } group by ?name ?speed 
 order by desc(?speed)
+
+
+
+# Hazards removal pokemon
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?pokemonName ?type1 ?type2 ?moveName WHERE {
+  # Relación entre Pokémon y sus movimientos
+  ?pokemon rdf:type ex:Pokemon ; ex:forme ?pokemonName ; ex:type1 ?type1 ; ex:type2 ?type2 .
+  ?moveset rdf:type ex:Moveset ; ex:forPokemon ?pokemon ; ex:moves ?move .
+
+  # Filtrar movimientos de remoción de hazards
+  ?move ex:name ?moveName .
+  FILTER(?moveName IN ("Defog", "Rapid Spin", "Court Change", "Mortal Spin"))
+}
+ORDER BY ?pokemonName
+
+
+#Pokemon con la mayor cobertura de tipos
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?pokemonName (COUNT(DISTINCT ?moveType) AS ?typeCoverage) WHERE {
+  ?pokemon rdf:type ex:Pokemon ; ex:forme ?pokemonName .
+  ?moveset rdf:type ex:Moveset ; ex:forPokemon ?pokemon ; ex:moves ?move .
+  ?move ex:type ?moveType .
+}
+GROUP BY ?pokemonName
+ORDER BY DESC(?typeCoverage)
+LIMIT 10
+
+
+
+
+
+#Tankiest pokemon
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+PREFIX ex: <http://example.org/>
+
+SELECT ?pokemonName ?hp ?defense ?spDefense ?totalDefense WHERE {
+  ?pokemon rdf:type ex:Pokemon ; ex:forme ?pokemonName ; ex:hp ?hp ; ex:defense ?defense ; ex:spdefense ?spDefense .
+
+  BIND(?hp + ?defense + ?spDefense AS ?totalDefense)
+}
+ORDER BY DESC(?totalDefense)
+LIMIT 10
+
+
+#Pokemon with the most moves
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+PREFIX ex: <http://example.org/>
+
+SELECT ?pokemonName (COUNT(?move) AS ?moveCount) WHERE {
+  ?pokemon rdf:type ex:Pokemon ; ex:forme ?pokemonName .
+  ?moveset rdf:type ex:Moveset ; ex:forPokemon ?pokemon ; ex:moves ?move .
+}
+GROUP BY ?pokemonName
+ORDER BY DESC(?moveCount)
+LIMIT 10
+
+
+#Pokémon with Priority Moves
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?pokemonName ?moveName ?priorityInt WHERE {
+  ?pokemon rdf:type ex:Pokemon ; ex:forme ?pokemonName .
+  ?moveset rdf:type ex:Moveset ; ex:forPokemon ?pokemon ; ex:moves ?move .
+  ?move ex:name ?moveName ; ex:priority ?priority .
+  BIND(xsd:integer(?priority) AS ?priorityInt)
+}
+ORDER BY DESC (?priorityInt) ?pokemonName
+
