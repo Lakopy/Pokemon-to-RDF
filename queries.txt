@@ -122,3 +122,108 @@ SELECT ?pokemonName ?moveName ?priorityInt WHERE {
 }
 ORDER BY DESC (?priorityInt) ?pokemonName
 
+
+
+# Faster Pokémon
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?name ?speed (GROUP_CONCAT(?moveName; separator=", ") AS ?allMoves) WHERE {
+  ?specificPokemon rdf:type ex:Pokemon ;
+                   ex:forme "Pikachu" ;
+                   ex:speed ?specificSpeed .
+  ?pokemon rdf:type ex:Pokemon ;
+           ex:forme ?name ;
+           ex:speed ?speed .
+  FILTER(?speed > ?specificSpeed)
+}
+GROUP BY ?name ?speed
+ORDER BY DESC(?speed)
+
+
+# Abilities by Move Usage
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?pokemonName WHERE {
+  ?pokemon rdf:type ex:Pokemon ;
+           ex:forme ?pokemonName ;
+           ex:ability1 ?ability ;
+           ex:ability2 ?ability2 ;
+           ex:abilityH ?abilityH .
+
+  FILTER(?ability = "Sturdy" || ?ability2 = "Sturdy" || ?abilityH = "Sturdy")
+
+  ?moveset rdf:type ex:Moveset ;
+           ex:forPokemon ?pokemon ;
+           ex:moves ?move .
+
+  ?move ex:name "Self-Destruct" .
+}
+
+
+# Compatibility of Pokémon and Moves
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?pokemonName ?moveName WHERE {
+  ?pokemon rdf:type ex:Pokemon ;
+           ex:forme ?pokemonName ;
+           ex:type1 ?type1 ;
+           ex:type2 ?type2 .
+  FILTER(?type1 = "Fire" || ?type2 = "Fire")
+
+  ?moveset rdf:type ex:Moveset ;
+           ex:forPokemon ?pokemon ;
+           ex:moves ?move .
+
+  ?move ex:name ?moveName ;
+        ex:type "Grass" .
+}
+ORDER BY ?pokemonName ?moveName
+
+
+# Find Pokémon by Move
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?pokemonName WHERE {
+  ?move ex:name "Trick Room" .
+
+  ?moveset rdf:type ex:Moveset ;
+           ex:moves ?move ;
+           ex:forPokemon ?pokemon .
+
+  ?pokemon rdf:type ex:Pokemon ;
+           ex:forme ?pokemonName .
+}
+ORDER BY ?pokemonName
+
+
+# First Partner Pokémon
+
+PREFIX ex: <http://example.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?pokemonName ?ndex WHERE {
+  ?pokemon rdf:type ex:Pokemon ;
+           ex:forme ?pokemonName ;
+           ex:ability1 ?ability1 ;
+           ex:ndex ?ndex .
+  FILTER(?ability1 = "Overgrow" || ?ability1 = "Blaze" || ?ability1 = "Torrent")
+}
+ORDER BY ?ndex
