@@ -22,8 +22,53 @@ This project utilizes tools from the Semantic Web, allowing data to be structure
   - Finding moves of a specific type that a certain Pokémon can learn.
   - Retrieving all Pokémon capable of learning a particular move.
 
-## Usage
 
-Instructions for running the data conversion scripts and performing SPARQL queries are included in this repository. 
+## Queries
 
-This project demonstrates the application of Linked Data principles in organizing and querying structured Pokémon data.
+This section lists the SPARQL queries included in the project, along with a brief description of their functionality.
+
+### List of Queries
+
+1. **Strongest STAB Attack**
+   - Finds the Pokémon with the strongest Same-Type Attack Bonus (STAB) moves, considering their effective power based on stats and move category.
+
+2. **Fastest Support Pokémon**
+   - Identifies the fastest Pokémon with support moves (Status category) and lists all their moves.
+
+3. **Hazard Removal Pokémon**
+   - Lists Pokémon capable of using moves to remove entry hazards (e.g., Defog, Rapid Spin).
+
+4. **Top Coverage Pokémon**
+   - Finds the Pokémon with the highest type coverage based on the variety of move types they can use.
+
+5. **Tankiest Pokémon**
+   - Determines the Pokémon with the highest combined HP, Defense, and Special Defense.
+
+6. **Pokémon with the Most Moves**
+   - Identifies the Pokémon with the largest number of distinct moves available in their moveset.
+
+7. **Pokémon with Priority Moves**
+   - Lists Pokémon that can use priority moves, ordered by the highest priority.
+
+8. **Faster Pokémon**
+   - Identifies Pokémon that are faster than a specific Pokémon (e.g., Pikachu).
+
+9. **Abilities by Move Usage**
+   - Finds Pokémon with specific abilities (e.g., Sturdy) that can use a specified move (e.g., Self-Destruct).
+
+10. **Compatibility of Pokémon and Moves**
+    - Lists Fire-type Pokémon that can learn Grass-type moves.
+
+11. **Find Pokémon by Move**
+    - Identifies Pokémon that can use a specific move (e.g., Trick Room).
+
+12. **First Partner Pokémon**
+    - Lists starter Pokémon with abilities like Overgrow, Blaze, or Torrent, ordered by National Dex number.
+
+### How to Use
+
+1. Install **Apache Jena Fuseki** on your machine.
+2. Upload the `merge.ttl` file as the dataset in the Fuseki server.
+3. Use the queries from `queries.txt` to interact with the dataset via the Fuseki query interface.
+
+Enjoy exploring the data!
